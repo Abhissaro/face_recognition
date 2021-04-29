@@ -146,7 +146,7 @@ with tf.Graph().as_default():
         embedding_size = embeddings.get_shape()[1]
 
         video_capture = cv2.VideoCapture(0)
-
+        comparisonMatrix = []
         while True:
             fps = video_capture.get(cv2.CAP_PROP_FPS)
             ret, frame = video_capture.read()
@@ -198,6 +198,7 @@ with tf.Graph().as_default():
                         predictions.append(names[idx])
                     else:
                         predictions.append("unknown")
+                    comparisonMatrix.append(predictions)
 
                 # draw
                 for i in range(boxes.shape[0]):
@@ -213,9 +214,14 @@ with tf.Graph().as_default():
                     cv2.putText(frame, text, (x1 + 6, y2 - 6), font, 0.3, (255, 255, 255), 1)
 
             cv2.imshow('Video', frame)
+            if len(comparisonMatrix)!= 0:
+                print(len([i for i in comparisonMatrix if i == ['Hetarth']])/len(comparisonMatrix))
 
             # Hit 'q' on the keyboard to quit!
             if cv2.waitKey(1) & 0xFF == ord('q'):
+                #print(comparisonMatrix)
+                #print([i for i in comparisonMatrix if i == 'Hetarth'])
+                print(len([i for i in comparisonMatrix if i == ['Hetarth']])/len(comparisonMatrix))
                 break
 
 # Release handle to the webcam
